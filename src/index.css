@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Abel&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&family=VT323&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /*font-family: "Source Code Pro", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
+    color: #00ef1c;
+    font: 1.1rem "VT323", Inconsolata, monospace;
+    line-height: 1;
+    font-weight: 400;
+    text-shadow: 0 0 5px #46b97f;
+
+
+    color-scheme: light dark;
+    /*color: rgb(253, 246, 199);*/
+    background-color: #000000;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+    font-weight: 500;
+    color: inherit;
+    text-decoration: inherit;
+}
+
+a:hover {
+    color: #66a5e6;
+    cursor: pointer;
+}
+
+body {
+    background-color: rgb(8, 36, 21);
+    background-image: radial-gradient(
+            rgb(8, 36, 21), black 120%
+    );
+    min-height: 100vh;
+    height: fit-content;
+    margin: 0;
+
+    &::after {
+        pointer-events: none;
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+        );
+    }
+
+    ::selection {
+        background: #0080FF;
+        text-shadow: none;
+    }
+}
+
+
+h1 {
+    font-size: 3.2em;
+    line-height: 1.1;
+}
+
+
