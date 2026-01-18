@@ -2,7 +2,30 @@
 
 import { motion } from "framer-motion";
 import { SKILLS, ABOUT_TEXT } from "@/lib/constants";
-import { ASCII_SKILL_BAR } from "@/lib/ascii-art";
+
+// Colored skill bar component
+function ColoredSkillBar({ level, category }: { level: number; category: string }) {
+  const total = 12;
+  const filled = level;
+  const empty = total - level;
+
+  // Color based on category
+  const colorClass = {
+    language: "text-cyan",
+    framework: "text-magenta",
+    tool: "text-yellow",
+    other: "text-terminal",
+  }[category] || "text-terminal";
+
+  return (
+    <span className="font-terminal text-[10px]">
+      <span className="text-ash">[</span>
+      <span className={colorClass}>{"█".repeat(filled)}</span>
+      <span className="text-ash">{"░".repeat(empty)}</span>
+      <span className="text-ash">]</span>
+    </span>
+  );
+}
 
 export function AboutSection() {
   return (
@@ -13,12 +36,14 @@ export function AboutSection() {
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
+        className="flex flex-col"
       >
-        <div className="mb-4 font-terminal text-xs text-smoke">
-          C:\FRANKY\ABOUT.TXT
+        <div className="mb-4 font-terminal text-xs">
+          <span className="text-cyan">C:\FRANKY\</span>
+          <span className="text-magenta">ABOUT.TXT</span>
         </div>
 
-        <div className="border border-ash bg-coal p-4">
+        <div className="flex-1 border border-ash bg-coal p-4">
           <div className="mb-4 flex items-center gap-2 border-b border-ash pb-2">
             <span className="font-terminal text-[10px] text-smoke">
               ─── FILE CONTENTS ───
@@ -37,12 +62,14 @@ export function AboutSection() {
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
         viewport={{ once: true }}
+        className="flex flex-col"
       >
-        <div className="mb-4 font-terminal text-xs text-smoke">
-          C:\FRANKY\SKILLS.DAT
+        <div className="mb-4 font-terminal text-xs">
+          <span className="text-cyan">C:\FRANKY\</span>
+          <span className="text-yellow">SKILLS.DAT</span>
         </div>
 
-        <div className="border border-ash bg-coal p-4">
+        <div className="flex-1 border border-ash bg-coal p-4">
           <div className="mb-4 flex items-center gap-2 border-b border-ash pb-2">
             <span className="font-terminal text-[10px] text-smoke">
               ─── SKILL LEVELS ───
@@ -63,9 +90,7 @@ export function AboutSection() {
                   <span className="font-terminal text-xs text-silver">
                     {skill.name}
                   </span>
-                  <span className="font-terminal text-[10px] text-smoke">
-                    {ASCII_SKILL_BAR(skill.level)}
-                  </span>
+                  <ColoredSkillBar level={skill.level} category={skill.category} />
                 </div>
               </motion.div>
             ))}
@@ -74,7 +99,10 @@ export function AboutSection() {
           {/* Legend */}
           <div className="mt-4 border-t border-ash pt-3">
             <div className="font-terminal text-[10px] text-smoke">
-              LEGEND: █ = Proficient | ░ = Learning
+              <span className="text-cyan">█</span> Language{" "}
+              <span className="text-magenta">█</span> Framework{" "}
+              <span className="text-yellow">█</span> Tool{" "}
+              <span className="text-terminal">█</span> Other
             </div>
           </div>
         </div>
@@ -85,9 +113,10 @@ export function AboutSection() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
           viewport={{ once: true }}
-          className="mt-4 font-terminal text-xs text-smoke"
+          className="mt-4 font-terminal text-xs"
         >
-          STATUS: Available for projects
+          <span className="text-smoke">STATUS: </span>
+          <span className="text-terminal">Available for projects</span>
         </motion.div>
       </motion.div>
     </div>

@@ -9,15 +9,15 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project, index }: ProjectCardProps) {
   const typeColors = {
-    web: "text-cyan border-ash hover:border-cyan",
-    game: "text-magenta border-ash hover:border-magenta",
-    tool: "text-yellow border-ash hover:border-yellow",
+    web: "text-cyan border-cyan/30 hover:border-cyan",
+    game: "text-magenta border-magenta/30 hover:border-magenta",
+    tool: "text-yellow border-yellow/30 hover:border-yellow",
   };
 
-  const typeGlow = {
-    web: "",
-    game: "",
-    tool: "",
+  const typeBadgeColors = {
+    web: "border-cyan/50 text-cyan",
+    game: "border-magenta/50 text-magenta",
+    tool: "border-yellow/50 text-yellow",
   };
 
   const typeLabel = {
@@ -26,9 +26,15 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
     tool: "TOOL",
   };
 
+  const linkColors = {
+    web: "text-cyan/70 hover:text-cyan",
+    game: "text-magenta/70 hover:text-magenta",
+    tool: "text-yellow/70 hover:text-yellow",
+  };
+
   return (
     <article
-      className={`group relative border bg-coal p-4 transition-all duration-300 ${typeColors[project.type]} ${typeGlow[project.type]}`}
+      className={`group relative border bg-coal p-4 transition-all duration-300 ${typeColors[project.type]}`}
     >
       {/* Index number */}
       <div className="absolute -left-px -top-px bg-void px-2 py-1 font-pixel text-[10px] text-smoke">
@@ -37,7 +43,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
 
       {/* Type badge */}
       <div
-        className="absolute -right-px -top-px border border-ash bg-void px-2 py-1 font-terminal text-[10px] text-smoke"
+        className={`absolute -right-px -top-px border bg-void px-2 py-1 font-terminal text-[10px] ${typeBadgeColors[project.type]}`}
       >
         {typeLabel[project.type]}
       </div>
@@ -71,7 +77,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-terminal text-xs text-smoke transition-colors hover:text-white"
+              className={`font-terminal text-xs transition-colors ${linkColors[project.type]}`}
             >
               [VIEW]
             </a>
@@ -81,7 +87,7 @@ export function ProjectCard({ project, index }: ProjectCardProps) {
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-terminal text-xs text-smoke transition-colors hover:text-white"
+              className={`font-terminal text-xs transition-colors ${linkColors[project.type]}`}
             >
               [CODE]
             </a>

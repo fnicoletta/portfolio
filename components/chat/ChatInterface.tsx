@@ -1,24 +1,125 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useChat } from "@ai-sdk/react";
+import { TextStreamChatTransport } from "ai";
 import { Cursor } from "@/components/ui/Cursor";
-import { findResponse, WELCOME_MESSAGE } from "@/lib/mock-responses";
 
-interface Message {
-  id: string;
-  type: "user" | "system";
-  content: string;
-  timestamp: Date;
+const WELCOME_MESSAGE = `BIOS v2.4.1 ... OK
+Memory Test ... 640K OK
+Loading PORTFOLIO.SYS ...
+
+═══════════════════════════════════
+  FRANKY KHOURY
+  Project Engineer // Game Dev
+═══════════════════════════════════
+
+System Ready.
+Type HELP for commands or ask me anything about Franky.`;
+
+// Syntax highlighting for terminal output
+function highlightText(text: string): React.ReactNode[] {
+  const lines = text.split("\n");
+
+  return lines.map((line, lineIndex) => {
+    const parts: React.ReactNode[] = [];
+    let remaining = line;
+    let keyIndex = 0;
+
+    // Pattern matching for different syntax elements
+    const patterns: { regex: RegExp; className: string }[] = [
+      // Status keywords
+      { regex: /\b(OK|READY|SUCCESS|DONE|COMPLETE)\b/g, className: "text-terminal" },
+      { regex: /\b(LOADING|PROCESSING|ACCESSING|ESTABLISHING)\b/g, className: "text-yellow" },
+      { regex: /\b(ERROR|FAIL|WARNING)\b/g, className: "text-red" },
+      // Section headers and labels
+      { regex: /^(CORE SKILLS|SPECIALTIES|WEB PROJECTS|GAME DEV|CAREER TIMELINE|HELP MENU):/gm, className: "text-cyan font-bold" },
+      { regex: /\[(.*?)\]/g, className: "text-yellow" },
+      // Paths and commands
+      { regex: /(C:\\[^\s]*|\/[^\s]+)/g, className: "text-cyan" },
+      // Tree characters - keep them subtle
+      { regex: /[├└│─═╔╗╚╝║]/g, className: "text-ash" },
+      // Progress bars
+      { regex: /[█▓░]/g, className: "text-terminal" },
+      // Greater than prompt
+      { regex: /^>/gm, className: "text-terminal" },
+      // Numbers and years
+      { regex: /\b(\d+\+?\s*years?|\d+K)\b/gi, className: "text-magenta" },
+      // Tech stack items
+      { regex: /\b(JavaScript|TypeScript|React|Next\.js|Node\.js|Python|PostgreSQL|MongoDB|AWS|Vercel)\b/g, className: "text-cyan" },
+    ];
+
+    // Simple approach: process line character by character, applying first matching pattern
+    // For better performance, we'll use a simpler highlighting strategy
+    const highlightLine = (line: string): React.ReactNode => {
+      // Check for specific patterns and apply colors
+      let result = line;
+
+      // Status words
+      if (/\b(OK|READY|System Ready)\b/.test(line)) {
+        return <span className="text-terminal">{line}</span>;
+      }
+      if (/\b(LOADING|Processing|ACCESSING|ESTABLISHING)\b/i.test(line)) {
+        return <span className="text-yellow">{line}</span>;
+      }
+      if (/^(CORE SKILLS|SPECIALTIES|WEB PROJECTS|CAREER TIMELINE|HELP MENU):?/i.test(line)) {
+        return <span className="text-cyan">{line}</span>;
+      }
+      if (/^>/.test(line)) {
+        return <><span className="text-terminal">&gt;</span><span className="text-silver">{line.slice(1)}</span></>;
+      }
+      if (/^[├└│─═]/.test(line)) {
+        // Tree structure lines - colorize the tree chars and the content
+        const match = line.match(/^([├└│─═╔╗╚╝║\s]+)(.*)$/);
+        if (match) {
+          return (
+            <>
+              <span className="text-ash">{match[1]}</span>
+              <span className="text-silver">{match[2]}</span>
+            </>
+          );
+        }
+      }
+      if (/[█▓░]{3,}/.test(line)) {
+        // Progress bar lines
+        return <span className="text-terminal">{line}</span>;
+      }
+
+      return <span className="text-silver">{line}</span>;
+    };
+
+    return (
+      <span key={lineIndex}>
+        {highlightLine(line)}
+        {lineIndex < lines.length - 1 && "\n"}
+      </span>
+    );
+  });
+}
+
+// Extract text content from message parts (v6 API)
+function getMessageText(message: { parts: Array<{ type: string; text?: string }> }): string {
+  return message.parts
+    .filter((part) => part.type === "text")
+    .map((part) => part.text || "")
+    .join("");
 }
 
 export function ChatInterface() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
   const [welcomeText, setWelcomeText] = useState("");
+  const [welcomeComplete, setWelcomeComplete] = useState(false);
+  const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  // Vercel AI SDK chat hook
+  const { messages, sendMessage, status } = useChat({
+    transport: new TextStreamChatTransport({ api: "/api/chat" }),
+  });
+
+  const isLoading = status === "streaming" || status === "submitted";
 
   // Typing effect for welcome message
   useEffect(() => {
@@ -32,82 +133,57 @@ export function ChatInterface() {
       } else {
         clearInterval(typeInterval);
         setShowWelcome(false);
-        // Add welcome as first message
-        setMessages([
-          {
-            id: "welcome",
-            type: "system",
-            content: WELCOME_MESSAGE,
-            timestamp: new Date(),
-          },
-        ]);
+        setWelcomeComplete(true);
       }
     }, 3);
 
     return () => clearInterval(typeInterval);
   }, []);
 
-  // Auto-scroll within the messages container only (not the whole page)
-  const messagesContainerRef = useRef<HTMLDivElement>(null);
-
+  // Auto-scroll within the messages container
   useEffect(() => {
-    if (!showWelcome && messages.length > 0 && messagesContainerRef.current) {
+    if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
-  }, [messages, showWelcome]);
+  }, [messages, welcomeText]);
 
-  // Focus input on load
+  // Focus input when welcome is done
   useEffect(() => {
-    if (!showWelcome) {
+    if (welcomeComplete) {
       inputRef.current?.focus();
     }
-  }, [showWelcome]);
-
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-      if (!input.trim() || isTyping) return;
-
-      const userMessage: Message = {
-        id: `user-${Date.now()}`,
-        type: "user",
-        content: input.trim(),
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, userMessage]);
-      setInput("");
-      setIsTyping(true);
-
-      // Simulate thinking delay
-      await new Promise((resolve) => setTimeout(resolve, 500 + Math.random() * 500));
-
-      const response = findResponse(input);
-
-      const systemMessage: Message = {
-        id: `system-${Date.now()}`,
-        type: "system",
-        content: response,
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, systemMessage]);
-      setIsTyping(false);
-    },
-    [input, isTyping]
-  );
+  }, [welcomeComplete]);
 
   const suggestedQuestions = [
-    "skills",
-    "projects",
-    "about",
-    "contact",
+    "What are your skills?",
+    "Tell me about your projects",
+    "Who is Franky?",
+    "How can I contact you?",
   ];
+
+  const onFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    const userMessage = input.trim();
+    setInput("");
+
+    await sendMessage({ text: userMessage });
+
+    // Refocus input after sending
+    inputRef.current?.focus();
+  };
+
+  const handleSuggestionClick = async (question: string) => {
+    if (isLoading) return;
+    await sendMessage({ text: question });
+    inputRef.current?.focus();
+  };
 
   return (
     <div className="flex h-full flex-col">
       {/* Terminal Header */}
-      <div className="flex items-center justify-between border-b border-ash bg-coal px-4 py-2">
+      <div className="flex items-center justify-between border-b border-ash bg-coal px-3 py-2 sm:px-4">
         <span className="font-terminal text-xs text-smoke">
           PORTFOLIO.SYS - Franky Khoury
         </span>
@@ -117,37 +193,49 @@ export function ChatInterface() {
       </div>
 
       {/* Messages Area */}
-      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 font-terminal text-sm leading-relaxed">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-3 font-terminal text-sm leading-relaxed sm:p-4">
         {showWelcome ? (
           <div className="whitespace-pre-wrap text-silver">
             {welcomeText}
             <Cursor className="text-silver" />
           </div>
         ) : (
-          <AnimatePresence mode="popLayout">
-            {messages.map((message) => (
-              <motion.div
-                key={message.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className={`mb-4 whitespace-pre-wrap ${
-                  message.type === "user"
-                    ? "text-white"
-                    : "text-silver"
-                }`}
-              >
-                {message.type === "user" && (
-                  <span className="text-smoke">{"C:\\> "}</span>
-                )}
-                {message.content}
-              </motion.div>
-            ))}
-          </AnimatePresence>
+          <>
+            {/* Welcome message (always shown first) */}
+            <div className="mb-4 whitespace-pre-wrap text-silver">
+              {highlightText(WELCOME_MESSAGE)}
+            </div>
+
+            {/* Chat messages */}
+            <AnimatePresence mode="popLayout">
+              {messages.map((message) => (
+                <motion.div
+                  key={message.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className={`mb-4 whitespace-pre-wrap ${
+                    message.role === "user"
+                      ? "text-white"
+                      : "text-silver"
+                  }`}
+                >
+                  {message.role === "user" && (
+                    <span className="text-cyan">{"C:\\> "}</span>
+                  )}
+                  {message.role === "user" ? (
+                    <span className="text-white">{getMessageText(message)}</span>
+                  ) : (
+                    highlightText(getMessageText(message))
+                  )}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </>
         )}
 
-        {isTyping && (
+        {isLoading && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -161,22 +249,20 @@ export function ChatInterface() {
       </div>
 
       {/* Suggested Questions */}
-      {messages.length <= 1 && !showWelcome && (
-        <div className="border-t border-ash bg-coal px-4 py-3">
+      {messages.length === 0 && !showWelcome && (
+        <div className="border-t border-ash bg-coal px-3 py-2 sm:px-4 sm:py-3">
           <div className="mb-2 font-terminal text-[10px] text-smoke">
-            TRY:
+            TRY ASKING:
           </div>
           <div className="flex flex-wrap gap-2">
             {suggestedQuestions.map((question) => (
               <button
                 key={question}
-                onClick={() => {
-                  setInput(question);
-                  inputRef.current?.focus();
-                }}
+                type="button"
+                onClick={() => handleSuggestionClick(question)}
                 className="font-terminal text-xs text-silver transition-colors hover:text-white"
               >
-                [{question.toUpperCase()}]
+                [{question}]
               </button>
             ))}
           </div>
@@ -185,22 +271,22 @@ export function ChatInterface() {
 
       {/* Input Area */}
       <form
-        onSubmit={handleSubmit}
-        className="flex items-center gap-2 border-t border-ash bg-coal px-4 py-3"
+        onSubmit={onFormSubmit}
+        className="flex items-center gap-2 border-t border-ash bg-coal px-3 py-3 sm:px-4"
       >
-        <span className="text-silver">C:\&gt;</span>
+        <span className="text-cyan">C:\&gt;</span>
         <input
           ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          disabled={showWelcome || isTyping}
-          placeholder={showWelcome ? "Loading..." : ""}
+          disabled={showWelcome}
+          placeholder={showWelcome ? "Loading..." : isLoading ? "Waiting for response..." : "Ask me anything..."}
           className="flex-1 bg-transparent font-terminal text-sm text-white placeholder-smoke outline-none"
           autoComplete="off"
           spellCheck="false"
         />
-        {!showWelcome && !isTyping && input.length === 0 && (
+        {!showWelcome && !isLoading && input.length === 0 && (
           <Cursor className="text-silver" />
         )}
       </form>

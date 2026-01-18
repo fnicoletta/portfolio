@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import { Press_Start_2P } from "next/font/google";
+import { Providers } from "@/components/providers/Providers";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -47,7 +48,7 @@ export default function RootLayout({
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

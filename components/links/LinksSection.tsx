@@ -15,8 +15,9 @@ export function LinksSection() {
       >
         {/* Terminal header */}
         <div className="flex items-center justify-between border-b border-ash bg-shadow px-4 py-2">
-          <span className="font-terminal text-xs text-smoke">
-            C:\FRANKY\LINKS.EXE
+          <span className="font-terminal text-xs">
+            <span className="text-cyan">C:\FRANKY\</span>
+            <span className="text-yellow">LINKS.EXE</span>
           </span>
         </div>
 
@@ -83,9 +84,10 @@ export function LinksSection() {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.6 }}
         viewport={{ once: true }}
-        className="mt-8 text-center font-terminal text-xs text-smoke"
+        className="mt-8 text-center font-terminal text-xs"
       >
-        Thanks for visiting. Let&apos;s build something.
+        <span className="text-smoke">Thanks for visiting. </span>
+        <span className="text-terminal">Let&apos;s build something.</span>
       </motion.div>
     </div>
   );

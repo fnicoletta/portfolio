@@ -14,25 +14,25 @@ export function ProjectGrid() {
       ? PROJECTS
       : PROJECTS.filter((p) => p.type === filter);
 
-  const filterButtons: { type: FilterType; label: string; color: string }[] = [
-    { type: "all", label: "ALL", color: "text-smoke hover:text-white" },
-    { type: "web", label: "WEB", color: "text-smoke hover:text-cyan" },
-    { type: "game", label: "GAMES", color: "text-smoke hover:text-magenta" },
-    { type: "tool", label: "TOOLS", color: "text-smoke hover:text-yellow" },
+  const filterButtons: { type: FilterType; label: string; color: string; activeColor: string }[] = [
+    { type: "all", label: "ALL", color: "text-smoke hover:text-white", activeColor: "text-terminal" },
+    { type: "web", label: "WEB", color: "text-smoke hover:text-cyan", activeColor: "text-cyan" },
+    { type: "game", label: "GAMES", color: "text-smoke hover:text-magenta", activeColor: "text-magenta" },
+    { type: "tool", label: "TOOLS", color: "text-smoke hover:text-yellow", activeColor: "text-yellow" },
   ];
 
   return (
     <div>
       {/* Filter buttons */}
-      <div className="mb-8 flex flex-wrap gap-2">
-        <span className="font-pixel text-[10px] text-smoke">FILTER:</span>
-        {filterButtons.map(({ type, label, color }) => (
+      <div className="mb-8 flex flex-wrap gap-3">
+        <span className="font-pixel text-[10px] text-cyan">FILTER:</span>
+        {filterButtons.map(({ type, label, color, activeColor }) => (
           <button
             key={type}
             onClick={() => setFilter(type)}
             className={`font-terminal text-xs transition-all ${
               filter === type
-                ? "text-white"
+                ? `${activeColor} text-glow-sm`
                 : color
             }`}
           >
