@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- wizard hat -->
+  <defs>
+    <linearGradient id="hat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#4c1d95"/>
+    </linearGradient>
+  </defs>
+  <!-- hat cone -->
+  <path d="M16 1 L6 25 L26 25 Z" fill="url(#hat)"/>
+  <!-- hat brim -->
+  <ellipse cx="16" cy="25" rx="14" ry="4" fill="#4c1d95"/>
+  <!-- star -->
+  <circle cx="14" cy="15" r="1.5" fill="#fbbf24"/>
+  <circle cx="18" cy="10" r="1" fill="#fbbf24"/>
+  <circle cx="12" cy="20" r="1" fill="#fbbf24"/>
+</svg>
