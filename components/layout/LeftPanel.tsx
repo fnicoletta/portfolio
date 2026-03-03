@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ContactLinks } from "@/components/ui/ContactLinks";
 import { ChatWidget } from "@/components/chat/ChatWidget";
@@ -28,10 +29,16 @@ export function LeftPanel() {
         initial="hidden"
         animate="show"
       >
-        <motion.div
-          variants={fadeUp}
-          className="w-28 h-28 rounded-full bg-[var(--color-border)] mb-6"
-        />
+        <motion.div variants={fadeUp} className="mb-6">
+          <Image
+            src="/photo.jpg"
+            alt="Franky Khoury Nicoletta"
+            width={112}
+            height={112}
+            className="w-28 h-28 rounded-full object-cover"
+            priority
+          />
+        </motion.div>
         <motion.h1
           variants={fadeUp}
           className="font-[family-name:var(--font-display)] text-3xl lg:text-4xl text-[var(--color-text)] leading-tight mb-2"
