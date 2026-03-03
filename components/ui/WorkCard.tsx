@@ -3,23 +3,34 @@
 import { motion } from "framer-motion";
 import type { WorkEntry } from "@/lib/data";
 
-export function WorkCard({ entry, index }: { entry: WorkEntry; index: number }) {
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0 },
+};
+
+export function WorkCard({
+  entry,
+  index,
+  mounted,
+}: {
+  entry: WorkEntry;
+  index: number;
+  mounted: boolean;
+}) {
   return (
     <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-panel)] p-6 transition-all duration-300 hover:border-[var(--color-text-tertiary)] hover:shadow-sm hover:-translate-y-0.5"
+      initial={false}
+      animate={mounted ? "visible" : "hidden"}
+      variants={fadeUp}
+      transition={{ duration: 0.4, delay: 0.15 * (index + 1) }}
+      className="group relative rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-panel)] p-5 transition-all duration-300 hover:border-[var(--color-accent)]/30 hover:-translate-y-0.5 glow-border glow-border-hover"
     >
-      {/* Current badge */}
       {entry.current && (
         <span className="absolute top-4 right-4 text-xs font-medium px-2.5 py-1 rounded-full bg-[var(--color-current-badge)] text-[var(--color-current-badge-text)]">
           Current
         </span>
       )}
 
-      {/* Company & Title */}
       <h3 className="text-lg font-semibold text-[var(--color-text)] mb-0.5">
         {entry.company}
       </h3>
@@ -30,17 +41,10 @@ export function WorkCard({ entry, index }: { entry: WorkEntry; index: number }) 
         {entry.dateRange}
       </p>
 
-      {/* Description */}
       <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-4">
         {entry.description}
       </p>
 
-      {/* Highlight */}
-      <p className="text-sm font-medium text-[var(--color-text)] mb-4">
-        {entry.highlight}
-      </p>
-
-      {/* Tags */}
       <div className="flex flex-wrap gap-1.5">
         {entry.tags.map((tag) => (
           <span

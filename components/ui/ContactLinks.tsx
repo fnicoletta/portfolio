@@ -5,7 +5,6 @@ const links = [
   { label: "(408) 455-6870", href: `tel:+14084556870`, icon: "phone" },
   { label: "LinkedIn", href: contact.linkedin, icon: "linkedin", external: true },
   { label: "GitHub", href: contact.github, icon: "github", external: true },
-  { label: "frankykhoury.com", href: contact.website, icon: "globe", external: true },
   { label: "Resume", href: "/resume.pdf", icon: "file", external: true },
 ];
 
@@ -44,7 +43,7 @@ export function ContactLinks() {
           href={link.href}
           target={link.external ? "_blank" : undefined}
           rel={link.external ? "noopener noreferrer" : undefined}
-          className="flex items-center gap-2.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors duration-200"
+          className="flex items-center gap-2.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:drop-shadow-[0_0_4px_rgba(0,255,136,0.4)] transition-all duration-200"
         >
           <LinkIcon type={link.icon} />
           <span>{link.label}</span>

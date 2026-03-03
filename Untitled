@@ -1,0 +1,49 @@
+Installing dependencies...
+17:02:07.156
+ 
+ ERR_PNPM_OUTDATED_LOCKFILE  Cannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date with <ROOT>/package.json
+17:02:07.157
+ 
+17:02:07.157
+ 
+Note that in CI environments this setting is tInstalling dependencies...
+17:02:07.156
+ 
+ ERR_PNPM_OUTDATED_LOCKFILE  Cannot install with "frozen-lockfile" because pnpm-lock.yaml is not up to date with <ROOT>/package.json
+17:02:07.157
+ 
+17:02:07.157
+ 
+Note that in CI environments this setting is true by default. If you still need to run install in such cases, use "pnpm install --no-frozen-lockfile"
+17:02:07.157
+ 
+17:02:07.157
+ 
+  Failure reason:
+17:02:07.157
+ 
+  specifiers in the lockfile don't match specifiers in package.json:
+17:02:07.157
+ 
+* 1 dependencies were added: recharts@^3.7.0
+17:02:07.157
+ 
+17:02:07.176
+ 
+Error: Command "pnpm install" exited with 1rue by default. If you still need to run install in such cases, use "pnpm install --no-frozen-lockfile"
+17:02:07.157
+ 
+17:02:07.157
+ 
+  Failure reason:
+17:02:07.157
+ 
+  specifiers in the lockfile don't match specifiers in package.json:
+17:02:07.157
+ 
+* 1 dependencies were added: recharts@^3.7.0
+17:02:07.157
+ 
+17:02:07.176
+ 
+Error: Command "pnpm install" exited with 1

@@ -1,30 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Instrument Serif", Georgia, serif;
-  --font-body: "Inter", system-ui, -apple-system, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-display: var(--font-instrument, "Instrument Serif"), Georgia, serif;
+  --font-body: var(--font-inter, "Inter"), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono, "Geist Mono"), ui-monospace, monospace;
 
-  --color-bg: #fafaf9;
-  --color-bg-panel: #ffffff;
-  --color-text: #1a1a1a;
-  --color-text-secondary: #6b7280;
-  --color-text-tertiary: #9ca3af;
-  --color-accent: #2563eb;
-  --color-accent-light: #dbeafe;
-  --color-border: #e5e7eb;
-  --color-border-light: #f3f4f6;
-  --color-tag-bg: #f3f4f6;
-  --color-tag-text: #374151;
-  --color-card-hover: #f9fafb;
-  --color-current-badge: #dcfce7;
-  --color-current-badge-text: #166534;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  --color-bg: #0a0f0a;
+  --color-bg-panel: #0d1210;
+  --color-text: #e0e6e0;
+  --color-text-secondary: #8a9a8a;
+  --color-text-tertiary: #5a6a5a;
+  --color-accent: #00ff88;
+  --color-accent-light: rgba(0, 255, 136, 0.08);
+  --color-border: #1a2a1a;
+  --color-border-light: #142014;
+  --color-tag-bg: rgba(0, 255, 136, 0.06);
+  --color-tag-text: #7dcea0;
+  --color-card-hover: #111a14;
+  --color-current-badge: rgba(0, 255, 136, 0.12);
+  --color-current-badge-text: #00ff88;
 }
 
 html {
@@ -40,7 +34,7 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-accent);
+  background-color: rgba(0, 255, 136, 0.3);
   color: white;
 }
 
@@ -89,4 +83,21 @@ body {
   .animate-marquee {
     animation: none !important;
   }
+}
+
+/* CRT glow utilities */
+.glow-border {
+  box-shadow: 0 0 8px rgba(0, 255, 136, 0.06), inset 0 0 8px rgba(0, 255, 136, 0.03);
+}
+
+.glow-border-hover:hover {
+  box-shadow: 0 0 16px rgba(0, 255, 136, 0.12), inset 0 0 12px rgba(0, 255, 136, 0.04);
+}
+
+.glow-text {
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+}
+
+.glow-accent {
+  text-shadow: 0 0 12px rgba(0, 255, 136, 0.5), 0 0 24px rgba(0, 255, 136, 0.2);
 }

@@ -16,7 +16,7 @@ export function SkillsMarquee() {
         {[...allSkills, ...allSkills].map((item, i) => (
           <span
             key={`${item.skill}-${i}`}
-            className="flex-none text-sm px-4 py-2 rounded-full border border-[var(--color-border)] text-[var(--color-text-secondary)] whitespace-nowrap hover:border-[var(--color-text-tertiary)] hover:text-[var(--color-text)] transition-colors duration-200"
+            className="flex-none text-sm px-3.5 py-1.5 rounded-full border border-[var(--color-border)] text-[var(--color-text-secondary)] whitespace-nowrap hover:border-[var(--color-accent)]/30 hover:text-[var(--color-accent)] hover:shadow-[0_0_8px_rgba(0,255,136,0.15)] transition-all duration-200"
           >
             {item.skill}
           </span>

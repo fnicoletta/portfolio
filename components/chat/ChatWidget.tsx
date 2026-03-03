@@ -4,12 +4,11 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { useState, useRef, useEffect } from "react";
 import { TypingPlaceholder } from "./TypingPlaceholder";
-import { chatSuggestions } from "@/lib/data";
 
 export function ChatWidget() {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [input, setInput] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { messages, sendMessage, status } = useChat({
@@ -20,11 +19,6 @@ export function ChatWidget() {
 
   const isLoading = status === "submitted" || status === "streaming";
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setHasInteracted(true);
-    sendMessage({ text: suggestion });
-  };
-
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -34,13 +28,16 @@ export function ChatWidget() {
   };
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
   }, [messages]);
 
   return (
     <div className="flex flex-col h-full">
       {hasInteracted && (
-        <div className="flex-1 overflow-y-auto mb-3 space-y-3 max-h-[300px] lg:max-h-[40vh]">
+        <div ref={messagesContainerRef} className="flex-1 overflow-y-auto mb-3 space-y-3 max-h-[300px] lg:max-h-[40vh]">
           {messages.map((msg) => (
             <div
               key={msg.id}
@@ -67,22 +64,6 @@ export function ChatWidget() {
               </span>
             </div>
           )}
-          <div ref={messagesEndRef} />
-        </div>
-      )}
-
-      {!hasInteracted && (
-        <div className="flex flex-wrap gap-2 mb-3">
-          {chatSuggestions.map((suggestion) => (
-            <button
-              key={suggestion}
-              type="button"
-              onClick={() => handleSuggestionClick(suggestion)}
-              className="text-xs px-3 py-1.5 rounded-full border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-colors duration-200 cursor-pointer"
-            >
-              {suggestion}
-            </button>
-          ))}
         </div>
       )}
 
@@ -92,7 +73,7 @@ export function ChatWidget() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="w-full text-sm px-4 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:border-[var(--color-accent)] transition-colors duration-200"
+          className="w-full text-sm px-4 py-2.5 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:border-[var(--color-accent)] focus:shadow-[0_0_8px_rgba(0,255,136,0.2)] transition-colors duration-200"
           placeholder={hasInteracted ? "Ask me anything..." : ""}
           disabled={isLoading}
         />
