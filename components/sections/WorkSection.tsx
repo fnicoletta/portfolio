@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import { work } from "@/lib/data";
 import { WorkCard } from "@/components/ui/WorkCard";
 
@@ -11,14 +10,11 @@ const fadeUp = {
 };
 
 export function WorkSection() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
   return (
     <section id="work" className="mb-12">
       <motion.h2
-        initial={false}
-        animate={mounted ? "visible" : "hidden"}
+        initial="hidden"
+        animate="visible"
         variants={fadeUp}
         transition={{ duration: 0.4 }}
         className="text-sm font-semibold uppercase tracking-widest text-[var(--color-text-tertiary)] mb-6"
@@ -27,7 +23,7 @@ export function WorkSection() {
       </motion.h2>
       <div className="grid grid-cols-1 gap-4">
         {work.map((entry, i) => (
-          <WorkCard key={entry.id} entry={entry} index={i} mounted={mounted} />
+          <WorkCard key={entry.id} entry={entry} index={i} />
         ))}
       </div>
     </section>

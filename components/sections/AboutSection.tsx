@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import { about } from "@/lib/data";
 
 const fadeUp = {
@@ -10,14 +9,11 @@ const fadeUp = {
 };
 
 export function AboutSection() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
   return (
     <section id="about" className="mb-12">
       <motion.h2
-        initial={false}
-        animate={mounted ? "visible" : "hidden"}
+        initial="hidden"
+        animate="visible"
         variants={fadeUp}
         transition={{ duration: 0.4 }}
         className="text-sm font-semibold uppercase tracking-widest text-[var(--color-text-tertiary)] mb-6"
@@ -28,8 +24,8 @@ export function AboutSection() {
         {about.paragraphs.map((paragraph, i) => (
           <motion.p
             key={i}
-            initial={false}
-            animate={mounted ? "visible" : "hidden"}
+            initial="hidden"
+            animate="visible"
             variants={fadeUp}
             transition={{ duration: 0.4, delay: 0.1 * (i + 1) }}
             className="text-base leading-relaxed text-[var(--color-text-secondary)]"

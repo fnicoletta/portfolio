@@ -11,16 +11,14 @@ const fadeUp = {
 export function WorkCard({
   entry,
   index,
-  mounted,
 }: {
   entry: WorkEntry;
   index: number;
-  mounted: boolean;
 }) {
   return (
     <motion.article
-      initial={false}
-      animate={mounted ? "visible" : "hidden"}
+      initial="hidden"
+      animate="visible"
       variants={fadeUp}
       transition={{ duration: 0.4, delay: 0.15 * (index + 1) }}
       className="group relative rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-panel)] p-5 transition-all duration-300 hover:border-[var(--color-accent)]/30 hover:-translate-y-0.5 glow-border glow-border-hover"

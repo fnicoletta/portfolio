@@ -83,7 +83,7 @@ export const skillCategories: SkillCategory[] = [
 
 export const about = {
   paragraphs: [
-    "I'm Franky, a product engineer based in California. I've spent the last 5 years building products from the ground up at early-stage startups. I care about clean architecture, thoughtful design decisions, and shipping things that actually work.",
+    "I'm Franky, a product engineer based in California. I've spent the last 6 years building products from the ground up at early-stage startups. I care about clean architecture, thoughtful design decisions, and shipping things that actually work.",
     "I believe engineering is evolving. It's less about writing every line of code and more about designing systems, making the right decisions, and knowing how to turn an idea into something real.",
   ],
 };

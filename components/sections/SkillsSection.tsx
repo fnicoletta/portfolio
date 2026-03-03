@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import { SkillsMarquee } from "@/components/ui/SkillsMarquee";
 
 const fadeUp = {
@@ -10,14 +9,11 @@ const fadeUp = {
 };
 
 export function SkillsSection() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
   return (
     <section id="skills" className="mb-12">
       <motion.h2
-        initial={false}
-        animate={mounted ? "visible" : "hidden"}
+        initial="hidden"
+        animate="visible"
         variants={fadeUp}
         transition={{ duration: 0.4 }}
         className="text-sm font-semibold uppercase tracking-widest text-[var(--color-text-tertiary)] mb-6"
@@ -25,8 +21,8 @@ export function SkillsSection() {
         Skills
       </motion.h2>
       <motion.div
-        initial={false}
-        animate={mounted ? { opacity: 1 } : { opacity: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         <SkillsMarquee />

@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
 import { ContactLinks } from "@/components/ui/ContactLinks";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 
@@ -12,19 +11,13 @@ const fadeUp = {
 };
 
 export function LeftPanel() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <aside className="lg:sticky lg:top-0 lg:h-screen lg:border-r border-[var(--color-border)] bg-[var(--color-bg-panel)] p-6 lg:p-8 flex flex-col lg:overflow-y-auto glow-border">
       <div className="flex-1 flex flex-col">
         <motion.div
           className="mb-4"
-          initial={false}
-          animate={mounted ? "visible" : "hidden"}
+          initial="hidden"
+          animate="visible"
           variants={fadeUp}
           transition={{ duration: 0.4, delay: 0 }}
         >
@@ -38,8 +31,8 @@ export function LeftPanel() {
           />
         </motion.div>
         <motion.h1
-          initial={false}
-          animate={mounted ? "visible" : "hidden"}
+          initial="hidden"
+          animate="visible"
           variants={fadeUp}
           transition={{ duration: 0.4, delay: 0.1 }}
           className="font-[family-name:var(--font-display)] text-3xl lg:text-4xl text-[var(--color-text)] leading-tight mb-2"
@@ -47,8 +40,8 @@ export function LeftPanel() {
           Franky Khoury Nicoletta
         </motion.h1>
         <motion.p
-          initial={false}
-          animate={mounted ? "visible" : "hidden"}
+          initial="hidden"
+          animate="visible"
           variants={fadeUp}
           transition={{ duration: 0.4, delay: 0.2 }}
           className="text-sm font-medium text-[var(--color-text-secondary)] mb-1"
@@ -56,8 +49,8 @@ export function LeftPanel() {
           Product Engineer
         </motion.p>
         <motion.p
-          initial={false}
-          animate={mounted ? "visible" : "hidden"}
+          initial="hidden"
+          animate="visible"
           variants={fadeUp}
           transition={{ duration: 0.4, delay: 0.3 }}
           className="text-sm italic text-[var(--color-text-tertiary)] mb-4"
@@ -65,8 +58,8 @@ export function LeftPanel() {
           Building products from zero to one.
         </motion.p>
         <motion.div
-          initial={false}
-          animate={mounted ? "visible" : "hidden"}
+          initial="hidden"
+          animate="visible"
           variants={fadeUp}
           transition={{ duration: 0.4, delay: 0.4 }}
         >
@@ -75,8 +68,8 @@ export function LeftPanel() {
       </div>
       <motion.div
         className="border-t border-[var(--color-border)] pt-4 mt-6"
-        initial={false}
-        animate={mounted ? { opacity: 1 } : { opacity: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ delay: 0.6, duration: 0.4 }}
       >
         <ChatWidget />
