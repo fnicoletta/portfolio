@@ -21,11 +21,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Franky Khoury Nicoletta | CTO & Founding Engineer",
   description:
-    "CTO & Founding Engineer building AI-powered products from zero to production. Full-stack TypeScript, React, Next.js, Node.js.",
+    "Product Engineer building AI-powered products from zero to production. Full-stack TypeScript, React, Next.js, Node.js.",
   keywords: [
     "Franky Khoury",
     "CTO",
     "Founding Engineer",
+    "Product Engineer",
     "Full Stack Developer",
     "TypeScript",
     "React",
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Franky Khoury Nicoletta" }],
   openGraph: {
-    title: "Franky Khoury Nicoletta | CTO & Founding Engineer",
+    title: "Franky Khoury Nicoletta | Product Engineer",
     description: "Building products from zero to one.",
     type: "website",
     url: "https://frankykhoury.com",
