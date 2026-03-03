@@ -21,7 +21,7 @@ export function WorkCard({
       animate="visible"
       variants={fadeUp}
       transition={{ duration: 0.4, delay: 0.15 * (index + 1) }}
-      className="group relative rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-panel)] p-5 transition-all duration-300 hover:border-[var(--color-accent)]/30 hover:-translate-y-0.5 glow-border glow-border-hover"
+      className="group relative rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-panel)] p-5 transition-[border-color,box-shadow,transform] duration-300 hover:border-[var(--color-accent)]/30 hover:-translate-y-0.5 glow-border glow-border-hover"
     >
       {entry.current && (
         <span className="absolute top-4 right-4 text-xs font-medium px-2.5 py-1 rounded-full bg-[var(--color-current-badge)] text-[var(--color-current-badge-text)]">
