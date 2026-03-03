@@ -10,7 +10,7 @@ export function WorkCard({ entry, index }: { entry: WorkEntry; index: number }) 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-panel)] p-6 transition-all duration-300 hover:border-[var(--color-text-tertiary)] hover:shadow-sm"
+      className="group relative rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-panel)] p-6 transition-all duration-300 hover:border-[var(--color-text-tertiary)] hover:shadow-sm hover:-translate-y-0.5"
     >
       {/* Current badge */}
       {entry.current && (

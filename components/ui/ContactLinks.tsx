@@ -6,6 +6,7 @@ const links = [
   { label: "LinkedIn", href: contact.linkedin, icon: "linkedin", external: true },
   { label: "GitHub", href: contact.github, icon: "github", external: true },
   { label: "frankykhoury.com", href: contact.website, icon: "globe", external: true },
+  { label: "Resume", href: "/resume.pdf", icon: "file", external: true },
 ];
 
 function LinkIcon({ type }: { type: string }) {
@@ -25,6 +26,9 @@ function LinkIcon({ type }: { type: string }) {
     ),
     globe: (
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /><path d="M2 12h20" /></svg>
+    ),
+    file: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /><path d="M14 2v4a2 2 0 0 0 2 2h4" /></svg>
     ),
   };
 
