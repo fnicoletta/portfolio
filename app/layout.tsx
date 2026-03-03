@@ -1,55 +1,57 @@
 import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
-import { Press_Start_2P } from "next/font/google";
-import { Providers } from "@/components/providers/Providers";
+import { Inter, Instrument_Serif, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-inter",
 });
 
-const pressStart2P = Press_Start_2P({
+const instrumentSerif = Instrument_Serif({
   weight: "400",
-  variable: "--font-pixel",
   subsets: ["latin"],
+  variable: "--font-instrument",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
 });
 
 export const metadata: Metadata = {
-  title: "Franky Khoury | Project Engineer & Game Dev",
+  title: "Franky Khoury Nicoletta | CTO & Founding Engineer",
   description:
-    "Portfolio of Franky Khoury - Project Engineer with 5+ years of coding experience. Building production-grade software with AI assistance. Game developer hobbyist.",
+    "CTO & Founding Engineer building AI-powered products from zero to production. Full-stack TypeScript, React, Next.js, Node.js.",
   keywords: [
     "Franky Khoury",
-    "Project Engineer",
-    "Software Developer",
-    "Game Developer",
-    "Portfolio",
+    "CTO",
+    "Founding Engineer",
+    "Full Stack Developer",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "AI Engineer",
   ],
-  authors: [{ name: "Franky Khoury" }],
+  authors: [{ name: "Franky Khoury Nicoletta" }],
   openGraph: {
-    title: "Franky Khoury | Project Engineer & Game Dev",
-    description:
-      "Portfolio of Franky Khoury - Project Engineer building production-grade software.",
+    title: "Franky Khoury Nicoletta | CTO & Founding Engineer",
+    description: "Building products from zero to one.",
     type: "website",
+    url: "https://frankykhoury.com",
   },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${geistMono.variable} ${pressStart2P.variable} antialiased bg-void text-white`}
-      >
-        <a href="#main-content" className="skip-link">
-          Skip to main content
-        </a>
-        <Providers>{children}</Providers>
-      </body>
+    <html
+      lang="en"
+      className={`${inter.variable} ${instrumentSerif.variable} ${geistMono.variable}`}
+    >
+      <body>{children}</body>
     </html>
   );
 }
